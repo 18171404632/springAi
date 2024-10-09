@@ -1,0 +1,18 @@
+spring:
+  profiles:
+    active: local
+  datasource:
+    url: jdbc:postgresql://127.0.0.1:5432/postgres
+    username: postgres
+    password: postgres
+  ai:
+    ollama:
+      ## 默认地址无需配置
+      base-url: http://localhost:11434
+      chat:
+        model: gemma:2b
+    openai:
+      chat:
+        api-key: "sk-y8wsKGMEytYXYV4aC009D5Ca1c2b447a99E07d5951953d09"
+        base-url: "https://xiaoai.plus"
+
