@@ -1,18 +1,53 @@
+server:
+  port: 26080
+  ssl:
+    enabled: false
+  tomcat:
+    accesslog:
+      enabled: false
+    max-connections: 10
+    max-threads: 2
+    min-spare-threads: 2
+
+#spring:
+#  ai:
+#    openai:
+#      chat:
+#        api-key: "sk-y8wsKGMEytYXYV4aC009D5Ca1c2b447a99E07d5951953d09"
+#        base-url: "https://xiaoai.plus"
+
 spring:
-  profiles:
-    active: local
   datasource:
-    url: jdbc:postgresql://127.0.0.1:5432/postgres
-    username: postgres
-    password: postgres
-  ai:
-    ollama:
-      ## 默认地址无需配置
-      base-url: http://localhost:11434
-      chat:
-        model: gemma:2b
-    openai:
-      chat:
-        api-key: "sk-y8wsKGMEytYXYV4aC009D5Ca1c2b447a99E07d5951953d09"
-        base-url: "https://xiaoai.plus"
+    atzxegj:
+      jdbcUrl: jdbc:mysql://localhost:3306/play_back_test?characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
+      username: root
+      password: 'RPKDAdCDYcDBvFRvCLDTqQ=='
+      driverClassName: com.mysql.jdbc.Driver
+      minimumIdle: 40
+      maximumPoolSize: 40
+      maxLifetime: 300000
+      poolName: hikari-cur
+      connectionTimeout: 1000
+      idleTimeout: 250000
+      validationTimeout: 5000
+      connectionTestQuery: SELECT 1
+      dataSourceProperties:
+        prepStmtCacheSize: 250
+        prepStmtCacheSqlLimit: 2048
+        cachePrepStmts: true
+
+
+logging:
+  level:
+    org:
+      springframework:
+        ai:
+          chat:
+            client:
+              advisor: DEBUG
+
+svr:
+  chnl:
+    third:
+      avscAppKey: "4dc90a9ded16427f"
 
