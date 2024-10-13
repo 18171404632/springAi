@@ -1,24 +1,33 @@
 package com.newkey.ai;
 
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.newkey.ai.dao.OpenAiChatRepository;
+import com.newkey.ai.entity.OpenAiChatEntity;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor;
-import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.openai.OpenAiChatModel;
 import org.springframework.ai.openai.OpenAiChatOptions;
 import org.springframework.ai.openai.api.OpenAiApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import reactor.core.publisher.Flux;
+
+import java.util.stream.Collectors;
 
 @SpringBootTest(classes = OpenAiTest.class)
 @RunWith(SpringRunner.class)
 @Slf4j
 public class OpenAiTest {
 
+
+    @Autowired
+    private OpenAiChatRepository openAiChatRepository;
 
     @Test
     public void testOpenAi(){
@@ -29,13 +38,32 @@ public class OpenAiTest {
 
         ChatClient chatClient = ChatClient.builder(chatModel).build();
 
-        String s = "鲁迅和周树人是什么关系？";
+        String user = "给我制定一个详细的一周锻炼计划，精确到每一天";
 
-        ChatResponse chatResponse = chatClient.prompt().advisors(new SimpleLoggerAdvisor(
-                request -> "Custom request: " + request.userText(),
-                response -> "Custom response: " + response.getResult()
-        )).user(s).call().chatResponse();
 
-        System.out.println(chatResponse.getResult());
+
+        //CassandraChatMemory.create(CassandraChatMemoryConfig.builder().withTimeToLive(Duration.ofDays(1)).build());
+
+        Flux<String> content = chatClient
+                .prompt()
+                .advisors(new SimpleLoggerAdvisor(
+                        request -> "Custom request: " + request.userText(),
+                        response -> "Custom response: " + response.getResult()))
+                .user(user).stream().content();
+
+        String assistant = content.collectList().block().stream().collect(Collectors.joining());
+
+
+        OpenAiChatEntity openAiChatEntity = new OpenAiChatEntity();
+        openAiChatEntity.setUserId("124325342");
+        openAiChatEntity.setSessionId("51221211");
+
+        JSONArray jsonArray = new JSONArray();
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("user", user);
+        jsonObject.put("assistant", assistant);
+        openAiChatEntity.setMessage(jsonArray.toJSONString());
+
+        openAiChatRepository.saveAndFlush(openAiChatEntity);
     }
 }
