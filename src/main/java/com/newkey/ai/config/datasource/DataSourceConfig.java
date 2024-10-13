@@ -15,7 +15,7 @@ import java.nio.charset.StandardCharsets;
  * 数据源
  */
 @Configuration
-@ConfigurationProperties(prefix = "spring.datasource.atzxegj")
+@ConfigurationProperties(prefix = "spring.datasource.openai")
 public class DataSourceConfig extends HikariConfig {
 
     @Value("${svr.chnl.third.avscAppKey}")

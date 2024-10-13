@@ -18,8 +18,8 @@ server:
 
 spring:
   datasource:
-    atzxegj:
-      jdbcUrl: jdbc:mysql://localhost:3306/play_back_test?characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
+    openai:
+      jdbcUrl: jdbc:mysql://localhost:3306/openai?characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
       username: root
       password: 'RPKDAdCDYcDBvFRvCLDTqQ=='
       driverClassName: com.mysql.jdbc.Driver
@@ -35,6 +35,15 @@ spring:
         prepStmtCacheSize: 250
         prepStmtCacheSqlLimit: 2048
         cachePrepStmts: true
+  jpa:
+    database:
+      database-platform: org.hibernate.dialect.MySQLDialect
+    properties:
+      hibernate:
+        generate_statistics: true
+        show_sql: true
+        generate_ddl: true
+        format_sql: true
 
 
 logging:
@@ -50,12 +59,3 @@ svr:
   chnl:
     third:
       avscAppKey: "4dc90a9ded16427f"
-
-logging:
-  level:
-    org:
-      springframework:
-        ai:
-          chat:
-            client:
-              advisor: debug
