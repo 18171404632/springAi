@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor;
+import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.openai.OpenAiChatModel;
 import org.springframework.ai.openai.OpenAiChatOptions;
 import org.springframework.ai.openai.api.OpenAiApi;
@@ -30,11 +31,11 @@ public class OpenAiTest {
 
         String s = "鲁迅和周树人是什么关系？";
 
-        ChatClient.CallResponseSpec call = chatClient.prompt().advisors(new SimpleLoggerAdvisor(
+        ChatResponse chatResponse = chatClient.prompt().advisors(new SimpleLoggerAdvisor(
                 request -> "Custom request: " + request.userText(),
                 response -> "Custom response: " + response.getResult()
-        )).user(s).call();
+        )).user(s).call().chatResponse();
 
-        System.out.println(call.content());
+        System.out.println(chatResponse.getResult());
     }
 }
