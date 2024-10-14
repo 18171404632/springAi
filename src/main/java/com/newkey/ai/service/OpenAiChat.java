@@ -1,4 +1,4 @@
-package com.newkey.ai;
+package com.newkey.ai.service;
 
 import com.newkey.ai.dao.OpenAiChatRepository;
 import org.springframework.beans.factory.annotation.Autowired;
